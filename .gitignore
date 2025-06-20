@@ -44,3 +44,4 @@ Thumbs.db
 # Testing
 jest.config.js
 coverage/
+.vercel
