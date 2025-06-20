@@ -35,6 +35,7 @@ export const BookValidationSchema =
       .transform(
         (val) => val?.trim() ?? ''
       ),
+      copies: z.number().min(1, 'Must add the number of copies.'),
     available: z
       .boolean()
       .default(true),
