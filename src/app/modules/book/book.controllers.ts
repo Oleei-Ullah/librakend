@@ -1,110 +1,88 @@
-import { NextFunction, Request, Response } from 'express';
+import { catchAsync } from '../../utils/catchAsync';
 import { bookServices } from './book.services';
 
 //create books controller
-const createBook = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await bookServices.createBookToDb(req.body);
+const createBook = catchAsync(async (req, res, _next) => {
+  const data = await bookServices.createBookToDb(req.body);
 
-    res.status(200).json({
-      success: true,
-      message: 'Book created succesfully.',
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+  res.status(200).json({
+    success: true,
+    message: 'Book created succesfully.',
+    data,
+  });
+});
 
 //get books controller support filtering, sorting and limit
-const getBooks = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { filter, sortBy, sort, limit } = req.query;
-    const data = await bookServices.getBooksFromDb({
-      filter: filter as string,
-      sortBy: sortBy as string,
-      sort: sort as 'asc' | 'desc',
-      limit: limit ? +limit : undefined,
-    });
-    res.status(200).json({
-      success: true,
-      message: 'Books retrieved succesfully.',
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+const getBooks = catchAsync(async (req, res, _next) => {
+  const { filter, sortBy, sort, limit } = req.query;
+  const data = await bookServices.getBooksFromDb({
+    filter: filter as string,
+    sortBy: sortBy as string,
+    sort: sort as 'asc' | 'desc',
+    limit: limit ? +limit : undefined,
+  });
+  res.status(200).json({
+    success: true,
+    message: 'Books retrieved succesfully.',
+    data,
+  });
+});
 
 //get book with id
-const getBookWithId = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { bookId } = req.params;
-    const data = await bookServices.getBooksFormDbWithId(bookId);
-    res.status(200).json({
-      success: true,
-      message: 'Book retrieved succesfully.',
+const getBookWithId = catchAsync(async (req, res, _next) => {
+  const { bookId } = req.params;
+  const data = await bookServices.getBooksFormDbWithId(bookId);
+  if (!data) {
+    res.status(404).json({
+      success: false,
+      message: 'Book not found!',
       data,
     });
-  } catch (err) {
-    next(err);
+    return;
   }
-};
+  res.status(200).json({
+    success: true,
+    message: 'Book retrieved succesfully.',
+    data,
+  });
+});
 
 //update book with id
-const updateBookById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { bookId } = req.params;
-    const data = await bookServices.updateBookIntoDbWithId(bookId, req.body);
-    if (!data) {
-      res.status(404).json({
-        success: false,
-        message: 'Book not found!',
-        data,
-      });
-    }
-    res.status(200).json({
-      success: true,
-      message: 'Book updated succesfully.',
+const updateBookById = catchAsync(async (req, res, _next) => {
+  const { bookId } = req.params;
+  const data = await bookServices.updateBookIntoDbWithId(bookId, req.body);
+  if (!data) {
+    res.status(404).json({
+      success: false,
+      message: 'Book not found!',
       data,
     });
-  } catch (err) {
-    next(err);
+    return;
   }
-};
+  res.status(200).json({
+    success: true,
+    message: 'Book updated succesfully.',
+    data,
+  });
+});
 
-const deleteBookById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { bookId } = req.params;
-    const data = await bookServices.deleteBookByIdFromDb(bookId);
-    if (!data) {
-      res.status(404).json({
-        success: false,
-        message: 'Book not found!',
-        data,
-      });
-    }
-    res.status(200).json({
-      success: true,
-      message: 'Book deleted succesfully.',
-      data: null,
+const deleteBookById = catchAsync(async (req, res, _next) => {
+  const { bookId } = req.params;
+  const data = await bookServices.deleteBookByIdFromDb(bookId);
+  if (!data) {
+    res.status(404).json({
+      success: false,
+      message: 'Book not found!',
+      data,
     });
-  } catch (err) {
-    next(err);
+    return;
   }
-};
+  res.status(200).json({
+    success: true,
+    message: 'Book deleted succesfully.',
+    data: null,
+  });
+});
 
 export const bookController = {
   createBook,
