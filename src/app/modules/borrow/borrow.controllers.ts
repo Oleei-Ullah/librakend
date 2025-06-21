@@ -20,6 +20,21 @@ const createBorrow = async (
   }
 };
 
+const getBorrows = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await borrowServices.getBorrowsFromdb();
+
+    res.status(200).json({
+      success: true,
+      message: 'Borrowed books summary retrieved successfully',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const borrowController = {
   createBorrow,
+  getBorrows,
 };

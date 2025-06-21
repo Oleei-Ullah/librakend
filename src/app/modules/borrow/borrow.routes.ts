@@ -4,5 +4,6 @@ import { borrowController } from './borrow.controllers';
 const borrowRoutes = Router();
 
 borrowRoutes.post('/', borrowController.createBorrow);
+borrowRoutes.get('/', borrowController.getBorrows);
 
 export default borrowRoutes;

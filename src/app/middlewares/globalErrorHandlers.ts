@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { ZodError } from 'zod';
 
-export const globalErrorHandler = (
+export const globalErrorHandler: ErrorRequestHandler = (
   err: any,
   _req: Request,
   res: Response,
@@ -17,6 +17,7 @@ export const globalErrorHandler = (
         issues: err.issues,
       },
     });
+    return;
   }
 
   if (err instanceof mongoose.Error.ValidationError) {
@@ -28,6 +29,7 @@ export const globalErrorHandler = (
         errors: err.errors,
       },
     });
+    return;
   }
 
   if (err instanceof mongoose.Error.CastError) {
@@ -42,6 +44,7 @@ export const globalErrorHandler = (
       success: false,
       message: 'Document not found',
     });
+    return;
   }
 
   if (err.code === 11000) {
@@ -52,6 +55,7 @@ export const globalErrorHandler = (
         keyValue: err.keyValue,
       },
     });
+    return;
   }
 
   if (err.status === 404) {
@@ -59,10 +63,12 @@ export const globalErrorHandler = (
       success: false,
       message: err.message || 'Not found',
     });
+    return;
   }
 
   res.status(500).json({
     success: false,
     message: err.message,
   });
+  return;
 };
