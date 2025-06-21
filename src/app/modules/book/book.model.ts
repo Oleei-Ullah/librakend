@@ -33,7 +33,7 @@ const BookSchema = new Schema<IBookDocument>(
       type: String,
       required: [true, 'ISBN is required.'],
       trim: true,
-      unique: true
+      unique: true,
     },
     description: {
       type: String,
@@ -41,7 +41,7 @@ const BookSchema = new Schema<IBookDocument>(
     },
     copies: {
       type: Number,
-      min: [1, 'Copies must be a positive number.'],
+      min: [0, 'Copies must be a positive number.'],
       required: [true, 'Number of copies is required.'],
     },
     available: {

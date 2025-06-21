@@ -66,6 +66,13 @@ const updateBookById = async (
   try {
     const { bookId } = req.params;
     const data = await bookServices.updateBookIntoDbWithId(bookId, req.body);
+    if (!data) {
+      res.status(404).json({
+        success: false,
+        message: 'Book not found!',
+        data,
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'Book updated succesfully.',
@@ -94,7 +101,7 @@ const deleteBookById = async (
     res.status(200).json({
       success: true,
       message: 'Book deleted succesfully.',
-      data: null
+      data: null,
     });
   } catch (err) {
     next(err);

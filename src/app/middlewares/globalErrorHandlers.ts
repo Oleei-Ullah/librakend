@@ -44,7 +44,6 @@ export const globalErrorHandler = (
     });
   }
 
-  
   if (err.code === 11000) {
     res.status(409).json({
       success: false,
@@ -63,7 +62,7 @@ export const globalErrorHandler = (
   }
 
   res.status(500).json({
-    message: 'Internal server error',
     success: false,
+    message: err.message,
   });
 };

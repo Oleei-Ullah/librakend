@@ -16,6 +16,6 @@ export const BookValidationSchema = z.object({
     .string()
     .optional()
     .transform((val) => val?.trim() ?? ''),
-  copies: z.number().min(1, 'Must add the number of copies.'),
+  copies: z.number().min(0, 'Must add the number of copies.'),
   available: z.boolean().default(true),
 });

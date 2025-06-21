@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express, { Application, json, Request, Response } from 'express';
-import routes from './app/routes';
 import { globalErrorHandler } from './app/middlewares/globalErrorHandlers';
+import routes from './app/routes';
 
 const app: Application = express();
 
@@ -12,10 +12,10 @@ app.use(routes);
 app.get('/', (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: 'Server Running sucessfully',
+    message: '🚀 Server Running sucessfully',
   });
 });
 
-app.use(globalErrorHandler)
+app.use(globalErrorHandler);
 
 export default app;

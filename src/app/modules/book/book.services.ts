@@ -32,13 +32,15 @@ const getBooksFormDbWithId = async (id: string) => {
 
 //find books by id from database and update----
 const updateBookIntoDbWithId = async (id: string, data: Partial<IBook>) => {
+  if (data.copies !== undefined) {
+    data.available = data.copies > 0;
+  }
   const result = await Book.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
   });
   return result;
 };
-
 
 //delete books by id from database
 const deleteBookByIdFromDb = async (id: string) => {
@@ -51,5 +53,5 @@ export const bookServices = {
   getBooksFromDb,
   getBooksFormDbWithId,
   updateBookIntoDbWithId,
-  deleteBookByIdFromDb
+  deleteBookByIdFromDb,
 };

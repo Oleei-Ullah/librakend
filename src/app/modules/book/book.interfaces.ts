@@ -18,7 +18,6 @@ export interface IBook {
 
 export type IBookDocument = IBook & Document;
 
-
 export type TQueryParams = {
   filter?: string;
   sortBy?: string;
