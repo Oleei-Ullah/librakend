@@ -32,3 +32,15 @@ A backend RESTful API for managing a digital library system built with **Express
 ├── tsconfig.json
 └── README.md
 ```
+```yaml
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Oleei-Ullah/library-management-api.git
+cd library-management-api
+```
