@@ -149,17 +149,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  if (err instanceof ZodError) {
-    res.status(400).json({
-      success: false,
-      message: 'Validation failed',
-      error: {
-        name: 'ZodError',
-        issues: err.issues,
-      },
-    });
-    return;
-  }
+
 
   if (err instanceof mongoose.Error.ValidationError) {
     res.status(400).json({
@@ -173,32 +163,6 @@ const globalErrorHandler: ErrorRequestHandler = (
     return;
   }
 
-  if (err instanceof mongoose.Error.CastError) {
-    res.status(400).json({
-      success: false,
-      message: 'Invalid ID format',
-    });
-    return;
-  }
-
-  if (err instanceof mongoose.Error.DocumentNotFoundError) {
-    res.status(404).json({
-      success: false,
-      message: 'Document not found',
-    });
-    return;
-  }
-
-  if (err.code === 11000) {
-    res.status(409).json({
-      success: false,
-      message: 'Duplicate key error',
-      error: {
-        keyValue: err.keyValue,
-      },
-    });
-    return;
-  }
 
   if (err.status === 404) {
     res.status(404).json({
@@ -208,10 +172,6 @@ const globalErrorHandler: ErrorRequestHandler = (
     return;
   }
 
-  res.status(500).json({
-    success: false,
-    message: err.message,
-  });
 };
 
 export default globalErrorHandler;
