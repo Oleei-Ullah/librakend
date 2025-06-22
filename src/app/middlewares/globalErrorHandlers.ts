@@ -2,7 +2,7 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { ZodError } from 'zod';
 
-export const globalErrorHandler: ErrorRequestHandler = (
+const globalErrorHandler: ErrorRequestHandler = (
   err: any,
   _req: Request,
   res: Response,
@@ -37,6 +37,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
       success: false,
       message: 'Invalid ID format',
     });
+    return;
   }
 
   if (err instanceof mongoose.Error.DocumentNotFoundError) {
@@ -70,5 +71,6 @@ export const globalErrorHandler: ErrorRequestHandler = (
     success: false,
     message: err.message,
   });
-  return;
 };
+
+export default globalErrorHandler;
