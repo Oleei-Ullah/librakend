@@ -55,4 +55,21 @@ const BookSchema = new Schema<IBookDocument>(
   }
 );
 
+BookSchema.pre('save', function (next) {
+  if (this.isModified('copies')) {
+    this.available = this.copies > 0;
+  }
+  next();
+});
+
+BookSchema.pre('findOneAndUpdate', function (next) {
+  const update = this.getUpdate() as Partial<IBookDocument>;
+  if (update?.copies !== undefined) {
+    update.available = update.copies > 0;
+    this.setUpdate(update);
+  }
+  next();
+});
+
+
 export const Book = model<IBookDocument>('Book', BookSchema);
